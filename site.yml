@@ -1,0 +1,8 @@
+---
+- hosts: ec2
+  become: true
+  roles:
+    - docker_install
+    - users
+    - security_hardening
+

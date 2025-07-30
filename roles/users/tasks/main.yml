@@ -1,0 +1,21 @@
+---
+- name: Create a DevOps user
+  user:
+    name: devops
+    groups: sudo, docker
+    shell: /bin/bash
+    create_home: yes
+    state: present
+
+- name: Set authorized key for devops user
+  authorized_key:
+    user: devops
+    state: present
+    key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: Allow devops user to have passwordless sudo
+  copy:
+    dest: /etc/sudoers.d/devops
+    content: "devops ALL=(ALL) NOPASSWD:ALL\n"
+    mode: '0440'
+
